@@ -4,7 +4,8 @@ import random
 import telebot
 from telebot import types
 
-from working_with_db import create_connection, creating_new_user, add_word_to_db, get_all_words, get_today_words
+from working_with_db import create_connection, creating_new_user, add_word_to_db, get_all_words, get_today_words, \
+    get_yesterday_words
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
@@ -26,13 +27,10 @@ def weather(message):
 @bot.message_handler(commands=["english"])
 def english(message):
     markup = types.InlineKeyboardMarkup()
-    btn_1 = types.InlineKeyboardButton("Добавить слова", callback_data="add")
-    markup.row(btn_1)
-    btn_2 = types.InlineKeyboardButton("Учить слова", callback_data="learn_words")
-    btn_3 = types.InlineKeyboardButton("Повторить вчерашние слова", callback_data="yesterday_words")
-    markup.row(btn_2, btn_3)
-    btn_4 = types.InlineKeyboardButton("Повторить все слова", callback_data="all_words")
-    markup.row(btn_4)
+    markup.row(types.InlineKeyboardButton("Добавить слова", callback_data="add"))
+    markup.row(types.InlineKeyboardButton("Учить сегодняшние слова", callback_data="learn_words"))
+    markup.row(types.InlineKeyboardButton("Повторить вчерашние слова", callback_data="yesterday_words"))
+    markup.row(types.InlineKeyboardButton("Повторить все слова", callback_data="all_words"))
     bot.send_message(message.chat.id, "Выберите свой вариант", reply_markup=markup)
 
 
@@ -44,7 +42,7 @@ def callback_message(callback):
     elif callback.data == "learn_words":
         learning_words(callback.message, get_today_words)
     elif callback.data == "yesterday_words":
-        bot.send_message(callback.message.chat.id, "Функция находится в разработке")
+        learning_words(callback.message, get_yesterday_words)
     elif callback.data == "all_words":
         learning_words(callback.message, get_all_words)
 
@@ -73,7 +71,7 @@ def learning_words(message, get_the_words):
     global WORDS
     telegram_user_id = message.chat.id
     my_words = get_the_words(telegram_user_id)
-    if my_words is None:
+    if not my_words:
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("Добавить слова", callback_data="add"))
         bot.send_message(message.chat.id, "Вы еще не добавляли слова", reply_markup=markup)
@@ -104,7 +102,7 @@ def checking_translated_word(message):
     markup = types.InlineKeyboardMarkup()
     markup.add(types.InlineKeyboardButton("Следующее слово", callback_data="learn_words"))
     if word == WORDS[message.chat.id]["test_word"]:
-        bot.send_message(message.chat.id, "Правильно! Продолжаем?", reply_markup=markup)
+        bot.send_message(message.chat.id, "👍 Правильно! Продолжаем?", reply_markup=markup)
     else:
 
         bot.send_message(message.chat.id,

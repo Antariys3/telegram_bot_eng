@@ -83,3 +83,17 @@ def get_today_words(telegram_user_id):
     cur.close()
     conn.close()
     return words
+
+
+def get_yesterday_words(telegram_user_id):
+    conn = sqlite3.connect("database.db")
+    cur = conn.cursor()
+    today = datetime.date.today()
+    yesterday = today - datetime.timedelta(days=1)
+
+    cur.execute("SELECT * FROM english WHERE user_id_telegram = ? AND date = ?", (telegram_user_id, yesterday))
+
+    words = cur.fetchall()
+    cur.close()
+    conn.close()
+    return words
