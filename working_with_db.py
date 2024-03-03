@@ -1,3 +1,4 @@
+import datetime
 import sqlite3
 
 
@@ -59,11 +60,24 @@ def add_word_to_db(id_telegram, eng, ru):
     conn.close()
 
 
-def get_the_words(telegram_user_id):
+def get_all_words(telegram_user_id):
     conn = sqlite3.connect("database.db")
     cur = conn.cursor()
 
     cur.execute("SELECT * FROM english WHERE user_id_telegram = ?", (telegram_user_id,))
+
+    words = cur.fetchall()
+    cur.close()
+    conn.close()
+    return words
+
+
+def get_today_words(telegram_user_id):
+    conn = sqlite3.connect("database.db")
+    cur = conn.cursor()
+    today_date = str(datetime.date.today())
+
+    cur.execute("SELECT * FROM english WHERE user_id_telegram = ? AND date = ?", (telegram_user_id, today_date))
 
     words = cur.fetchall()
     cur.close()
