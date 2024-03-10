@@ -93,7 +93,7 @@ def learning_words(message, get_the_words):
     lot = random.randint(1, 2)
     reverse_lot = 2 if lot == 1 else 1
     WORDS[telegram_user_id]["test_word"] = element[lot]
-    bot.send_message(message.chat.id, f"Напишите перевод слова {element[reverse_lot]}")
+    bot.send_message(message.chat.id, f"Напишите перевод слова <b>{element[reverse_lot]}</b>", parse_mode="HTML")
     bot.register_next_step_handler(message, checking_translated_word)
 
 
@@ -106,8 +106,8 @@ def checking_translated_word(message):
     else:
 
         bot.send_message(message.chat.id,
-                         f"Правильный перевод {WORDS[message.chat.id]['test_word']}. Хотите продолжить?",
-                         reply_markup=markup)
+                         f"Правильный перевод <b>{WORDS[message.chat.id]['test_word']}</b>. Хотите продолжить?",
+                         parse_mode="HTML", reply_markup=markup)
 
 
 if __name__ == "__main__":
