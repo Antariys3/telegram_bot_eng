@@ -1,13 +1,10 @@
-import os
 import random
 
-import telebot
+
 from telebot import types
+from config import bot
 
 from working_with_db import add_word_to_db, get_all_words, get_today_words, get_yesterday_words
-
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 
 WORDS = {}
 

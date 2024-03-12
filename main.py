@@ -1,6 +1,5 @@
-from telebot import types
-
-from english_functions import bot, english
+from config import bot
+from english_functions import english
 from working_with_db import create_connection, creating_new_user
 
 
