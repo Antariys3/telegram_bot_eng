@@ -7,6 +7,7 @@ from config import bot
 from working_with_db import add_word_to_db, get_all_words, get_today_words, get_yesterday_words
 
 WORDS = {}
+my_words = []
 
 
 @bot.message_handler(commands=["english"])
@@ -53,24 +54,26 @@ def add_rus(message):
 
 
 def learning_words(message, get_the_words):
-    global WORDS
+    global WORDS, my_words
     telegram_user_id = message.chat.id
-    my_words = get_the_words(telegram_user_id)
     if not my_words:
-        markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("Добавить слова", callback_data="add"))
-        bot.send_message(message.chat.id, "Вы еще не добавляли слова", reply_markup=markup)
-        return
+        my_words = get_the_words(telegram_user_id)
+        if not my_words:
+            markup = types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton("Добавить слова", callback_data="add"))
+            bot.send_message(message.chat.id, "Вы еще не добавляли слова", reply_markup=markup)
+            return
 
     if telegram_user_id in WORDS and "words" in WORDS[telegram_user_id]:
-        list_words = WORDS[telegram_user_id]["words"].copy()
+        list_words = WORDS[telegram_user_id]["words"]
     else:
         WORDS[telegram_user_id] = {}
         WORDS[telegram_user_id]["words"] = my_words.copy()
-        list_words = WORDS[telegram_user_id]["words"].copy()
+        list_words = WORDS[telegram_user_id]["words"]
 
     if not list_words:
-        list_words = WORDS[telegram_user_id]["words"].copy()
+        WORDS[telegram_user_id]["words"] = my_words.copy()
+        list_words = WORDS[telegram_user_id]["words"]
 
     random_index = random.choice(range(len(list_words)))
     element = list_words.pop(random_index)
