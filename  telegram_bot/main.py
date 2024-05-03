@@ -1,4 +1,6 @@
 from config import bot
+
+# Импорт оставлен для других модулей, не удалять
 from english_functions import english
 from working_with_db import create_connection, creating_new_user
 
