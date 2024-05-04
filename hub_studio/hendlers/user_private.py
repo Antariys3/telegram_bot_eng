@@ -60,6 +60,7 @@ async def payment_cmd(message: types.Message):
 
 
 # Символ | значит or. Символ & значит and
+# .contains("str") фильтр поиска выражения в слове
 @user_private_router.message((F.text.lower().contains("доставк")) | (F.text.lower().contains("варианты доставки")))
 @user_private_router.message(Command('shipping'))
 async def menu_cmd(message: types.Message):
@@ -67,7 +68,7 @@ async def menu_cmd(message: types.Message):
         as_marked_section(
             Bold("Варианты доставки/заказа:"),
             "Курьер",
-            "Самовынос (сейчас прибегу заберу)",
+            "Само вынос (сейчас прибегу заберу)",
             "Покушаю у Вас (сейчас прибегу)",
             marker='✅ '
         ),

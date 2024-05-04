@@ -15,7 +15,7 @@ ADMIN_KB = get_keyboard(
     "Удалить товар",
     "Я так, просто посмотреть зашел",
     placeholder="Выберите действие",
-    sizes=(2, 1, 1),
+    sizes=(2, 1, 1)
 )
 
 
@@ -164,4 +164,4 @@ async def add_image(message: types.Message, state: FSMContext):
 
 @admin_router.message(AddProduct.image)
 async def add_image2(message: types.Message, state: FSMContext):
-    await message.answer("Отправьте фото пищи")
+    await message.answer("Отправьте фото пицы")

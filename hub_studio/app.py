@@ -9,8 +9,10 @@ from hub_studio.hendlers.user_private import user_private_router
 from hub_studio.hendlers.user_group import user_group_router
 from hub_studio.hendlers.admin_private import admin_router
 
+# Обновления, которые присылает API телеграмма
 ALLOWED_UPDATES = ['messages', 'edited_messages']
 bot = Bot(token=TELEGRAM_BOT_TOKEN, parse_mode=ParseMode.HTML)
+# Создание списка админов. Введите /admin в группе, потом /admin в лс.
 bot.my_admins_list = []
 
 dp = Dispatcher()
