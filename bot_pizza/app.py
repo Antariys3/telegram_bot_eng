@@ -1,27 +1,21 @@
 import asyncio
-import os
 
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 
-from dotenv import find_dotenv, load_dotenv
-
-load_dotenv(find_dotenv())
-
-from middlewares.db import DataBaseSession
-
-from database.engine import create_db, drop_db, session_maker
-
-from handlers.user_private import user_private_router
-from handlers.user_group import user_group_router
+from config import TELEGRAM_BOT_TOKEN
+from database.engine import create_db, session_maker
 from handlers.admin_private import admin_router
+from handlers.user_group import user_group_router
+from handlers.user_private import user_private_router
+from middlewares.db import DataBaseSession
 
 # from common.bot_cmds_list import private
 
 
 # ALLOWED_UPDATES = ['message', 'edited_message', 'callback_query']
 
-bot = Bot(token=os.getenv('TOKEN'), parse_mode=ParseMode.HTML)
+bot = Bot(token=TELEGRAM_BOT_TOKEN, parse_mode=ParseMode.HTML)
 bot.my_admins_list = []
 
 dp = Dispatcher()
@@ -53,4 +47,6 @@ async def main():
     # await bot.set_my_commands(commands=private, scope=types.BotCommandScopeAllPrivateChats())
     await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
 
-asyncio.run(main())
+
+if __name__ == "__main__":
+    asyncio.run(main())
