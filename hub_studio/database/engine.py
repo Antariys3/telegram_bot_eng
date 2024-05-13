@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 
 from hub_studio.database.models import Base
 
-# DB_LITE=sqlite+aiosqlite:///hub_studio/database/my_base.db
+# DB_LITE=sqlite+aiosqlite:///bot_pizza/database/my_base.db
 # DB_URL=postgresql+asyncpg://login:password@localhost:5432/db_name
 
 engine = create_async_engine(os.getenv("DB_URL"), echo=True)
